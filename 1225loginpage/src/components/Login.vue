@@ -4,10 +4,10 @@
             <span @click="goIndex">返回</span>
             <h3>手机号登录</h3>
         </header>
-        <section class="section">
+        <section class="log_section">
             <ul class="l_uls">
-                <li><input type="text" placeholder="手机号"/></li>
-                <li><input type="text" placeholder="密码"/></li>
+                <li class="bd"><img src="../images/tel.png"/><input type="text" placeholder="手机号"/></li>
+                <li class="bd"><img src="../images/pas.png"/><input type="text" placeholder="密码"/></li>
                 <li><button>登录</button></li>
                 <li><a>重设密码</a></li>
             </ul>
@@ -52,12 +52,16 @@ export default {
         color:#fff;
         line-height:44px;
     }
-    .section{
+    .log_section{
         width:100%;
         flex:1;
+        background:#FBFCFD;
     }
     .l_uls{
         margin-top:30px;
+    }
+    .l_uls .bd{
+        border-bottom:1px solid #ccc;
     }
     .l_uls li {
         width:80%;
@@ -66,11 +70,21 @@ export default {
         margin-top:10px;
         margin-left:10%;
     }
+    .l_uls li img{
+        width:17px;
+        height:24px;
+        float: left;
+        margin-right:6px;
+        margin-top:7px;
+    }
     .l_uls li input{
-        width:100%;
+        width:93%;
         height:32px;
+        float: left;
         border:none;
-        border-bottom:1px solid #ccc;
+        outline:none;
+        background:#FBFCFD;
+        
     }
     .l_uls li button{
         width:100%;

@@ -86,7 +86,7 @@ export default {
         text-align:center;
         margin-left:5px;
         font-size:28px;
-        margin-top:5px;
+        margin-top:8px;
     }
     .footer_bot dl dd{
         margin-top:10px;
