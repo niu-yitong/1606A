@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    img{
+        width:100px;
+        height:100px;
+    }
+</style>
+<body>
+    <script>
+        var loadImg = (src)=>{
+            return new Promise((resolve,reject)=>{
+                let img = new Image();
+                img.onload = ()=>{
+                    resolve(img)
+                }
+                img.onerror = ()=>{
+                    reject()
+                }
+                img.src=src;
+            })
+        }
+        let imgData=[{
+            "title":"图片一",
+            "img": "http://pic151.nipic.com/file/20180103/25059247_095632627036_2.jpg"              
+        },{
+            "title":" 图片二",
+            "img":"http://www.17qq.com/img_qqtouxiang/77443339.jpeg"       
+        },{
+            "title":" 图片二",
+            "img":"http://img3.duitang.com/uploads/item/201506/12/20150612215027_yc5WS.jpeg"      
+        },{
+            "title":" 图片二",
+            "img":"http://img.zcool.cn/community/015da9554971170000019ae9f43459.jpg@2o.jpg"      
+        },{
+            "title":" 图片二",
+            "img":"http://img.zcool.cn/community/01f9ea56e282836ac72531cbe0233b.jpg@2o.jpg"    
+        }]
+
+
+
+        //图片加载完成之后立刻添加到dom中
+        //方法一：用promise.alll实心
+        // let promise = imgData.map(item=>loadImg(item.img));
+        // Promise.all(promise).then(res=>{
+        //     res.forEach(item=>document.body.appendChild(item))
+        // })
+
+
+        //方法二：用async/await实现
+        // let promise = imgData.map(item=>loadImg(item.img));
+        // (async function loadImgAsync() { 
+        //     let imgs = [];
+        //     for(let i=0,len=promise.length;i<len;i++){
+        //         imgs.push(await promise[i])
+        //     }
+        //     imgs.forEach(item=>document.body.appendChild(item))
+           
+        // })()
+
+
+
+        //方法三：用轮询方法
+        let promise = imgData.map(item=>loadImg(item.img));
+        (()=>{
+            let result = [];
+            imgData.forEach(item=>{
+                let img = new Image();
+                img.onload = ()=>{
+                   result.push(img);
+                   if(result.length==imgData.length){
+                        result.forEach(item=>document.body.appendChild(item))
+                   }
+                }
+                img.src=item.img;
+            })
+        })()
+    </script>
+</body>
+</html>

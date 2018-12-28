@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    img{
+        width:120px;
+        height:120px;
+    }
+</style>
+<body>
+    <script>
+        var loadImg = (src)=>{
+            return new Promise((resolve,reject)=>{
+                let img = new Image();
+                img.onload = ()=>{
+                    resolve(img)
+                }
+                img.onerror = ()=>{
+                    reject()
+                }
+                img.src=src;
+            })
+        }
+        let imgArr=[
+                        "http://pic151.nipic.com/file/20180103/25059247_095632627036_2.jpg",
+                        "http://www.17qq.com/img_qqtouxiang/77443339.jpeg",
+                        "http://img3.duitang.com/uploads/item/201506/12/20150612215027_yc5WS.jpeg",
+                        "http://img.zcool.cn/community/015da9554971170000019ae9f43459.jpg@2o.jpg",
+                        "http://img.zcool.cn/community/01f9ea56e282836ac72531cbe0233b.jpg@2o.jpg"
+                      
+                    ];
+        for(var i in imgArr){
+            console.log(i)
+            loadImg(imgArr[i]).then(res=>{
+                document.body.append(res)
+            },err=>{
+                console.log("err...",err)
+            })    
+        }
+    </script>
+</body>
+</html>
