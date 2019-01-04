@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>补换驾照</title>
+  <script>
+    // 计算rem
+    var fun = function (doc, win) {
+      var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+          var clientWidth = docEl.clientWidth;
+          if (!clientWidth) return;
+          //这里是假设在750px宽度设计稿的情况下，1rem = 100px；
+          //可以根据实际需要修改
+          // docEl.style.fontSize =  (clientWidth / 750)*100 + 'px';
+        };
+      if (!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener('DOMContentLoaded', recalc, false);
+    }
+    fun(document, window);
+    // 引入移动端调试工具
+    (function () {
+      var script = document.createElement('script');
+      script.src = "//cdn.jsdelivr.net/npm/eruda";
+      document.head.appendChild(script);
+      script.onload = function () {
+        eruda.init()
+      }
+    })();
+
+  </script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="./dist/build.js"></script>
+</body>
+
+</html>

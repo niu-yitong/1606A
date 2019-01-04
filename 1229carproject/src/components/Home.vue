@@ -11,7 +11,6 @@
         </header>
         <!-- 内容 -->
         <section class="h_section">
-            <!-- banner -->
             <img class="bn1" src="../assets/bn1.jpg"/>
             <div class="showPic">
                 <dl @click="show('zhengOne')">

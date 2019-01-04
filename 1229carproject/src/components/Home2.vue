@@ -11,7 +11,6 @@
         </header>
         <!-- 内容 -->
         <section class="h_section">
-            <!-- banner -->
             <img class="bn1" src="../assets/bn1.jpg"/>
             <div class="showPic">
                 <dl @click="show('zhengOne')">
@@ -37,13 +36,13 @@
             </div>
             <div class="choose">
                 <ul>
-                    <li @click="changeJiazhao">
+                    <li @click="showJiazhao">
                        <p>服务类型</p>
-                       <div><span>{{val}}</span></div>
+                       <div><span>换驾照</span></div>
                     </li>
                     <li @click="showCity">
                         <p>当前驾照签发城市</p>
-                        <span>{{qianfaArea}}</span>
+                        <span>请选择签发地</span>
                     </li>
                     <li>
                         <p>可补换的签发城市</p>
@@ -95,98 +94,46 @@
                 </ul>
             </div>
         </div>
-        <!-- 城市 -->
         <div class="city">
             <mt-popup v-model="popupVisible" position="bottom" class="cityBox">
-              <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount	="5" @change="addressChange" :itemHeight="40"></mt-picker>
+                <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
             </mt-popup>
         </div>
-        <!-- 补换驾照 -->
-        <div class="changeJiazhao">
-            <mt-popup v-model="showType" position="bottom" class="changeJiazhaoBox">
-                <mt-picker :slots="typeArray" showToolbar @change="onValuesChange">
-                    <div class="tit">
-                        <span @click="ensureType(0)">取消</span>
-                        <h4>服务器类型</h4>
-                        <span @click="ensureType(1)">确认</span>
-                    </div>    
-                </mt-picker>    
-            </mt-popup>
-        </div>
+        <!-- 换驾照 -->
+        <Showjiazhao></Showjiazhao>
     </div>
 </template>
 
 <script>
-import threeLevelAddress from '../assets/json/areaCode.json'
+import Showjiazhao from "./Showjiazhao"
 export default {
     name:"Home",
     data(){
         return{
-            val:'',
            showMsk:false ,
            src:"",
            popupVisible:false,
-           showType:false,
-           qianfaArea:"请选择签发地",
-           typeArray:[{values: ['换驾照', '补驾照']}],
-           form:{
-               type:""
-           },
-           region:'',//三级地址
-            province:'',//省
-            city:'',//市
-            county:'',//县
-            provinceCode:'',//省级代码
-            cityCode:'', //市级代码
-            countyCode:'',//县级代码
-    
-            regionVisible:false,//弹出框是否可见
-            regionInit:false,//禁止地区选择器自动初始化，picker组件会默认进行初始化，导致一进入页面就会默认选中一个初始3级地址
-    
-            //picker组件插槽
-            myAddressSlots: [
-              //省
-            {
+           slots: [
+                {
                 flex: 1,
-                values: this.getProvinceArr(), //省份数组
+                values: ['北京', '上海', '广州', '2015-04', '2015-05', '2015-06'],
                 className: 'slot1',
-                textAlign: 'center'
-            },
-               //分隔符
-            {
+                textAlign: 'right'
+                }, {
                 divider: true,
-                content: '',
+                content: '-',
                 className: 'slot2'
-            },
-              //市
-            {
+                }, {
                 flex: 1,
-                values: this.getCityArr("北京市"),
+                values: ['北1', '2上海', '2015-03', '2015-04', '2015-05', '2015-06'],
                 className: 'slot3',
-                textAlign: 'center'
-            },
-            {
-                divider: true,
-                content: '',
-                className: 'slot4'
-            },
-              //县
-            {
-                flex: 1,
-                values: this.getCountyArr("北京市","市辖区"),
-                className: 'slot5',
-                textAlign: 'center'
-            }
+                textAlign: 'left'
+                }
             ]
- 
         }
         
     },
     methods:{
-        changeJiazha(){
-            alert(1111);
-            console.log("changeJiazha");
-        },
         show(type){
             // alert(type);
             switch(type){
@@ -214,12 +161,6 @@ export default {
         showCity(){
            this.popupVisible=true; 
         },
-        changeJiazhao(){
-            this.showType=true; 
-        },
-        ensureType(){
-           this.showType=false
-        },
         hideMsk(){
             this.showMsk=false;
         },
@@ -227,83 +168,10 @@ export default {
             if (values[0] > values[1]) {
                 picker.setSlotValue(1, values[0]);
             }
-           
-            this.val=values.join('')
-             //console.log(this.val)
         },
-
-         addressChange(picker, values){
-        console.log(picker+"aaaaaaaaaaaaaaaaaaaaa");
-        console.table(values);
-        if (this.regionInit){
-          //取值并赋值
-          this.region = values[0]["name"] + values[1]["name"] + values[2]["name"];
-          this.province = values[0]["name"];
-          this.city = values[1]["name"];
-          this.county = values[2]["name"];
-          this.provinceCode = values[0]["code"];
-          this.cityCode = values[1]["code"];
-          this.countyCode = values[2]["code"];
-          this.qianfaArea = this.region;
-          console.log(picker.getSlotValue(0));
-          console.table(picker.getSlotValues(0));
-          console.table(picker.getValues());
-          //给市、县赋值
-          picker.setSlotValues(1, this.getCityArr(values[0]["name"]));
-          picker.setSlotValues(2, this.getCountyArr(values[0]["name"], values[1]["name"]));
-        }else {
-          this.regionInit = true;
+        showJiazhao(){
+            alert(1)
         }
-      },
-      //遍历json，返回省级对象数组
-      getProvinceArr() {
-          console.log(threeLevelAddress)
-        let provinceArr = [];
-        threeLevelAddress.forEach(function (item) {
-          let obj = {};
-          obj.name = item.name;
-          obj.code = item.code;
-          provinceArr.push(obj);
-        });
-        return provinceArr;
-      },
-      //遍历json，返回市级对象数组
-      getCityArr(province) {
-        // console.log("省：" + province);
-        let cityArr = [];
-        threeLevelAddress.forEach(function (item) {
-          if (item.name === province) {
-            item.children.forEach(function (args) {
-              let obj = {};
-              obj.name = args.name;
-              obj.code = args.code;
-              cityArr.push(obj);
-            });
-          }
-        });
-        return cityArr;
-      },
-      //遍历json，返回县级对象数组
-      getCountyArr(province,city){
-        let countyArr = [];
-        threeLevelAddress.forEach(function(item){
-          if (item.name === province){
-            item.children.forEach(function (args) {
-              if (args.name === city){
-                args.children.forEach(function (param) {
-                  let obj = {};
-                  obj.name=param.name;
-                  obj.code=param.code;
-                  countyArr.push(obj);
-                })
-              }
-            });
-          }
-        });
-        // console.log(countyArr);
-        return countyArr;
-      },
-
     }
 }
 </script>
@@ -492,17 +360,16 @@ html,body{
     border-bottom:none;
 }
 .issue{
-    width: 100%;
-    height: 32px;
-    margin-top: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    width:100%;
+    height:32px;
+    margin-top:5px;
 }
 .issue a{
     text-align:center;
     line-height:32px;
     color:#45ACF1;
+    margin:0 auto;
+    margin-left:150px;
     font-size:14px;
     text-decoration:underline;
 }
@@ -545,24 +412,6 @@ html,body{
 /* 签发城市 */
 .cityBox{
     width:100%;
-    height:300px;
-}
-.changeJiazhaoBox{
-    width:100%;
-    height:300px;
-}
-
-.tit{
-    width:100%;
-    height:45px;
-    display:flex;
-    flex-direction: row;
-    justify-content:space-between;
-    padding:0 15px;
-    box-sizing: border-box;
-    line-height:45px;
-}
-.tit span{
-    color: #45ACF1;
+    height:140px;
 }
 </style>
