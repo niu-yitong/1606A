@@ -38,7 +38,7 @@
                 <ul>
                     <li @click="changeJiazhao">
                        <p>服务类型</p>
-                       <div><span>{{form.type}}</span></div>
+                       <div><span>{{val}}</span></div>
                     </li>
                     <li @click="showCity">
                         <p>当前驾照签发城市</p>
@@ -103,7 +103,13 @@
         <!-- 补换驾照 -->
         <div class="changeJiazhao">
             <mt-popup v-model="showType" position="bottom" class="changeJiazhaoBox">
-                <mt-picker :slots="typeArray" showToolbar title="服务器类型"></mt-picker>    
+                <mt-picker :slots="typeArray" showToolbar @change="onValuesChange">
+                    <div class="tit">
+                        <span @click="ensureType(0)">取消</span>
+                        <h4>服务器类型</h4>
+                        <span @click="ensureType(1)">确认</span>
+                    </div>    
+                </mt-picker>    
             </mt-popup>
         </div>
     </div>
@@ -115,6 +121,7 @@ export default {
     name:"Home",
     data(){
         return{
+            val:'',
            showMsk:false ,
            src:"",
            popupVisible:false,
@@ -209,6 +216,9 @@ export default {
         changeJiazhao(){
             this.showType=true; 
         },
+        ensureType(){
+           this.showType=false
+        },
         hideMsk(){
             this.showMsk=false;
         },
@@ -216,6 +226,9 @@ export default {
             if (values[0] > values[1]) {
                 picker.setSlotValue(1, values[0]);
             }
+           
+            this.val=values.join('')
+             //console.log(this.val)
         },
 
          addressChange(picker, values){
@@ -478,16 +491,17 @@ html,body{
     border-bottom:none;
 }
 .issue{
-    width:100%;
-    height:32px;
-    margin-top:5px;
+    width: 100%;
+    height: 32px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 .issue a{
     text-align:center;
     line-height:32px;
     color:#45ACF1;
-    margin:0 auto;
-    margin-left:150px;
     font-size:14px;
     text-decoration:underline;
 }
@@ -535,5 +549,19 @@ html,body{
 .changeJiazhaoBox{
     width:100%;
     height:300px;
+}
+
+.tit{
+    width:100%;
+    height:45px;
+    display:flex;
+    flex-direction: row;
+    justify-content:space-between;
+    padding:0 15px;
+    box-sizing: border-box;
+    line-height:45px;
+}
+.tit span{
+    color: #45ACF1;
 }
 </style>
