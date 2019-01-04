@@ -110,7 +110,7 @@ export default {
 .section_content{
     flex: 1;
     width: 96%;
-    height: 78%;
+    height: 73%;
     margin-left: 2%;
     background: #FBFCFE;
     position: absolute;
